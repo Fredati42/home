@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="NeuAutoStock">
+<meta name="theme-color" content="#0a0a0b">
+<title>NeuAutoStock</title>
+<style>
+:root {
+  --bg-primary: #0a0a0b;
+  --bg-secondary: #111113;
+  --bg-tertiary: #18181b;
+  --bg-elevated: #1f1f23;
+  --bg-glass: rgba(17, 17, 19, 0.88);
+  
+  --border-subtle: rgba(255,255,255,0.06);
+  --border-medium: rgba(255,255,255,0.12);
+  --border-strong: rgba(255,255,255,0.2);
+  
+  --text-primary: #f4f4f5;
+  --text-secondary: #a1a1aa;
+  --text-tertiary: #52525b;
+  --text-muted: #3f3f46;
+  
+  --gold: #d4a84b;
+  --gold-dim: #b8923f;
+  --gold-glow: rgba(212, 168, 75, 0.15);
+  
+  --danger: #ef4444;
+  --danger-dim: rgba(239, 68, 68, 0.12);
+  --success: #22c55e;
+  --success-dim: rgba(34, 197, 94, 0.12);
+  --info: #3b82f6;
+  --info-dim: rgba(59, 130, 246, 0.12);
+  --warning: #f97316;
+  --warning-dim: rgba(249, 115, 22, 0.12);
+  --purple: #a855f7;
+  --purple-dim: rgba(168, 85, 247, 0.12);
+  
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  
+  --safe-top: env(safe-area-inset-top);
+  --safe-bottom: env(safe-area-inset-bottom);
+  --safe-left: env(safe-area-inset-left);
+  --safe-right: env(safe-area-inset-right);
+  
+  --font-mono: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --font-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+}
+
+html, body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  height: 100%;
+  overscroll-behavior: none;
+  overflow-x: hidden;
+}
+
+body {
+  padding-top: var(--safe-top);
+  padding-bottom: var(--safe-bottom);
+  padding-left: var(--safe-left);
+  padding-right: var(--safe-right);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   HEADER
+═══════════════════════════════════════════════════════════ */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--bg-glass);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border-bottom: 1px solid var(--border-subtle);
+  padding: 12px 16px 14px;
+}
+
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-icon {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(145deg, var(--gold), var(--gold-dim));
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--bg-primary);
+  box-shadow: 0 2px 12px var(--gold-glow);
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-title {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: var(--text-primary);
+}
+
+.brand-subtitle {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+.btn-add {
+  background: var(--gold);
+  color: var(--bg-primary);
+  border: none;
+  border-radius: var(--radius-xl);
+  padding: 10px 16px;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  box-shadow: 0 2px 12px var(--gold-glow);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.btn-add:active {
+  transform: scale(0.96);
+  box-shadow: 0 1px 6px var(--gold-glow);
+}
+
+/* Search */
+.search-wrap {
+  position: relative;
+  margin-bottom: 12px;
+}
+
+.search-input {
+  width: 100%;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: 16px;
+  font-family: inherit;
+  padding: 12px 44px 12px 44px;
+  outline: none;
+  -webkit-appearance: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.search-input::placeholder {
+  color: var(--text-tertiary);
+}
+
+.search-input:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px var(--gold-glow);
+}
+
+.search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-tertiary);
+  pointer-events: none;
+  width: 18px;
+  height: 18px;
+}
+
+.search-clear {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--bg-elevated);
+  border: none;
+  color: var(--text-tertiary);
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-size: 14px;
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-wrap.has-value .search-clear {
+  display: flex;
+}
+
+/* Category Pills */
+.cats-scroll {
+  overflow-x: auto;
+  scrollbar-width: none;
+  margin: 0 -16px;
+  padding: 0 16px;
+}
+
+.cats-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.cats {
+  display: flex;
+  gap: 8px;
+  padding-bottom: 2px;
+}
+
+.cat-pill {
+  white-space: nowrap;
+  padding: 8px 14px;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cat-pill:active {
+  transform: scale(0.96);
+}
+
+.cat-pill.active {
+  background: var(--gold);
+  color: var(--bg-primary);
+  border-color: var(--gold);
+  font-weight: 600;
+  box-shadow: 0 2px 12px var(--gold-glow);
+}
+
+.cat-pill .cnt {
+  font-size: 11px;
+  font-weight: 700;
+  background: rgba(0,0,0,0.15);
+  padding: 2px 7px;
+  border-radius: 10px;
+  min-width: 20px;
+  text-align: center;
+}
+
+.cat-pill.active .cnt {
+  background: rgba(0,0,0,0.25);
+}
+
+.cat-pill.alert-cat {
+  border-color: var(--danger);
+  color: var(--danger);
+  background: var(--danger-dim);
+}
+
+.cat-pill.alert-cat.active {
+  background: var(--danger);
+  color: white;
+  border-color: var(--danger);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   QUICK STOCK VIEW
+═══════════════════════════════════════════════════════════ */
+.quick-stock {
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-subtle);
+  overflow: hidden;
+  max-height: 240px;
+  transition: max-height 0.3s ease;
+}
+
+.quick-stock.collapsed {
+  max-height: 44px;
+}
+
+.quick-stock-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.quick-stock-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.quick-stock-title svg {
+  color: var(--gold);
+  width: 16px;
+  height: 16px;
+}
+
+.quick-stock-toggle {
+  background: none;
+  border: none;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s;
+}
+
+.quick-stock-toggle svg {
+  width: 20px;
+  height: 20px;
+}
+
+.quick-stock.collapsed .quick-stock-toggle {
+  transform: rotate(180deg);
+}
+
+.quick-stock-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(68px, 1fr));
+  gap: 6px;
+  padding: 0 12px 12px;
+  max-height: 180px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.quick-ref {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 8px 4px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.15s;
+  position: relative;
+}
+
+.quick-ref:active {
+  transform: scale(0.95);
+}
+
+.quick-ref.in-stock {
+  border-color: rgba(34, 197, 94, 0.3);
+}
+
+.quick-ref.low-stock {
+  border-color: rgba(239, 68, 68, 0.4);
+  background: var(--danger-dim);
+}
+
+.quick-ref.zero-stock {
+  opacity: 0.4;
+}
+
+.quick-ref-code {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--gold);
+  letter-spacing: 0.2px;
+  margin-bottom: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.quick-ref-qty {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.quick-ref.low-stock .quick-ref-qty {
+  color: var(--danger);
+}
+
+.quick-ref.zero-stock .quick-ref-qty {
+  color: var(--text-muted);
+}
+
+.quick-ref-dot {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--danger);
+  animation: pulse-dot 1.5s infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   STATS BAR
+═══════════════════════════════════════════════════════════ */
+.stats-bar {
+  display: flex;
+  gap: 8px;
+  padding: 12px 16px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  background: var(--bg-primary);
+  -webkit-overflow-scrolling: touch;
+}
+
+.stats-bar::-webkit-scrollbar {
+  display: none;
+}
+
+.stat-chip {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 10px 14px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 64px;
+}
+
+.stat-value {
+  font-size: 18px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  color: var(--success);
+}
+
+.stat-value.warn {
+  color: var(--danger);
+}
+
+.stat-label {
+  font-size: 9px;
+  font-weight: 500;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 2px;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   MAIN GRID
+═══════════════════════════════════════════════════════════ */
+.main-content {
+  padding: 0 12px 120px;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 4px 10px;
+}
+
+.section-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--border-medium), transparent);
+}
+
+.section-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+.section-badge {
+  background: var(--bg-elevated);
+  padding: 3px 8px;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+/* Cards */
+.card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  transition: border-color 0.2s, transform 0.15s;
+}
+
+.card:active {
+  transform: scale(0.98);
+}
+
+.card.low-stock {
+  border-color: rgba(239, 68, 68, 0.4);
+  background: linear-gradient(145deg, var(--bg-secondary), var(--danger-dim));
+}
+
+.card.zero-stock {
+  opacity: 0.5;
+}
+
+.card-alert {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--danger);
+  box-shadow: 0 0 8px var(--danger);
+  animation: pulse-dot 1.5s infinite;
+}
+
+.card-ref {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--gold);
+  letter-spacing: 0.3px;
+}
+
+.card-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+
+.card-compat {
+  font-size: 10px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+  flex: 1;
+}
+
+.card-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 9px;
+  font-weight: 600;
+  padding: 3px 7px;
+  border-radius: var(--radius-xs);
+  width: fit-content;
+}
+
+.badge-lame { background: var(--info-dim); color: var(--info); }
+.badge-telecommande { background: var(--success-dim); color: var(--success); }
+.badge-transpondeur { background: var(--gold-glow); color: var(--gold); }
+.badge-lishi { background: var(--warning-dim); color: var(--warning); }
+.badge-pile { background: var(--purple-dim); color: var(--purple); }
+
+/* Quantity Controls */
+.qty-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 8px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.qty-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.qty-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-medium);
+  color: var(--text-primary);
+  font-size: 20px;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s;
+  user-select: none;
+}
+
+.qty-btn:active {
+  background: var(--gold);
+  color: var(--bg-primary);
+  border-color: var(--gold);
+  transform: scale(0.9);
+}
+
+.qty-value {
+  font-family: var(--font-mono);
+  font-size: 20px;
+  font-weight: 700;
+  min-width: 28px;
+  text-align: center;
+}
+
+.qty-value.ok { color: var(--success); }
+.qty-value.low { color: var(--danger); }
+.qty-value.zero { color: var(--text-muted); }
+
+.card-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.action-btn {
+  flex: 1;
+  padding: 8px 0;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+  font-size: 11px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.action-btn:active {
+  background: var(--bg-elevated);
+}
+
+.action-btn.danger {
+  color: var(--danger);
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+.action-btn.danger:active {
+  background: var(--danger-dim);
+}
+
+/* Empty State */
+.empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.empty-icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 16px;
+  background: var(--bg-tertiary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+}
+
+.empty-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+}
+
+.empty-text {
+  font-size: 13px;
+  color: var(--text-tertiary);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   MODAL
+═══════════════════════════════════════════════════════════ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 200;
+  display: flex;
+  align-items: flex-end;
+  animation: fadeIn 0.2s ease;
+}
+
+.modal-overlay.hidden {
+  display: none;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 20px 20px calc(20px + var(--safe-bottom));
+  border-top: 1px solid var(--border-medium);
+  animation: slideUp 0.3s ease;
+  -webkit-overflow-scrolling: touch;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+.modal-handle {
+  width: 40px;
+  height: 4px;
+  background: var(--border-strong);
+  border-radius: 2px;
+  margin: 0 auto 20px;
+}
+
+.modal-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+  width: 100%;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: 16px;
+  font-family: inherit;
+  padding: 14px 16px;
+  outline: none;
+  -webkit-appearance: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px var(--gold-glow);
+}
+
+.form-textarea {
+  height: 80px;
+  resize: none;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.modal-btn {
+  flex: 1;
+  padding: 16px;
+  border-radius: var(--radius-md);
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.modal-btn:active {
+  transform: scale(0.98);
+}
+
+.modal-btn.cancel {
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+}
+
+.modal-btn.save {
+  background: var(--gold);
+  color: var(--bg-primary);
+  box-shadow: 0 4px 16px var(--gold-glow);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   TOAST
+═══════════════════════════════════════════════════════════ */
+.toast {
+  position: fixed;
+  bottom: calc(24px + var(--safe-bottom));
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-xl);
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 500;
+  z-index: 300;
+  pointer-events: none;
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+.toast.success {
+  border-color: rgba(34, 197, 94, 0.4);
+}
+
+.toast.error {
+  border-color: rgba(239, 68, 68, 0.4);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════════════════ */
+@media (max-width: 374px) {
+  .grid { grid-template-columns: 1fr; }
+  .quick-stock-grid { grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); }
+}
+
+@media (min-width: 500px) {
+  .grid { grid-template-columns: repeat(3, 1fr); }
+}
+</style>
+
+<link rel='manifest' href='manifest.json'>
+<link rel='apple-touch-icon' href='icons/icon-192.png'>
+<script>if('serviceWorker' in navigator){navigator.serviceWorker.register('service-worker.js');}</script>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-top">
+    <div class="brand">
+      <div class='brand-icon'><img src='icons/icon-192.png' style='width:36px;height:36px;border-radius:8px;'/></div>
+      <div class="brand-text">
+        <div class="brand-title">NeuAutoStock</div>
+        <div class="brand-subtitle">Serrurerie Auto</div>
+      </div>
+    </div>
+    <button class="btn-add" onclick="openModal()">+ Ajouter</button>
+  </div>
+  
+  <div class="search-wrap" id="searchWrap">
+    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input type="text" class="search-input" id="searchInput" placeholder="Réf., marque, modèle…" autocorrect="off" autocapitalize="off" spellcheck="false">
+    <button class="search-clear" onclick="clearSearch()">✕</button>
+  </div>
+  
+  <div class="cats-scroll">
+    <div class="cats" id="cats"></div>
+  </div>
+</header>
+
+<!-- QUICK STOCK VIEW -->
+<section class="quick-stock" id="quickStock">
+  <div class="quick-stock-header" onclick="toggleQuickStock()">
+    <span class="quick-stock-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      Vue rapide stock
+    </span>
+    <button class="quick-stock-toggle">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg>
+    </button>
+  </div>
+  <div class="quick-stock-grid" id="quickStockGrid"></div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar" id="statsBar"></div>
+
+<!-- MAIN CONTENT -->
+<main class="main-content" id="mainContent"></main>
+
+<!-- MODAL -->
+<div class="modal-overlay hidden" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-handle"></div>
+    <h2 class="modal-title" id="modalTitle">Ajouter un article</h2>
+    
+    <div class="form-group">
+      <label class="form-label">Référence</label>
+      <input type="text" class="form-input" id="formRef" placeholder="ex: HU66, ID48…" autocorrect="off" autocapitalize="characters">
+    </div>
+    
+    <div class="form-group">
+      <label class="form-label">Désignation</label>
+      <input type="text" class="form-input" id="formName" placeholder="ex: Lame HU66 VAG" autocorrect="off">
+    </div>
+    
+    <div class="form-group">
+      <label class="form-label">Catégorie</label>
+      <select class="form-select" id="formCat">
+        <option value="lame">🔑 Lame</option>
+        <option value="telecommande">📡 Télécommande</option>
+        <option value="transpondeur">📟 Transpondeur</option>
+        <option value="lishi">🔧 Lishi</option>
+        <option value="pile">🔋 Pile</option>
+      </select>
+    </div>
+    
+    <div class="form-group">
+      <label class="form-label">Compatibilités</label>
+      <textarea class="form-textarea" id="formCompat" placeholder="ex: VW Golf IV-VII, Audi A3, Seat, Skoda"></textarea>
+    </div>
+    
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Quantité</label>
+        <input type="number" class="form-input" id="formQty" min="0" value="1" inputmode="numeric">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Seuil alerte</label>
+        <input type="number" class="form-input" id="formThreshold" min="0" value="2" inputmode="numeric">
+      </div>
+    </div>
+    
+    <div class="modal-buttons">
+      <button class="modal-btn cancel" onclick="closeModal()">Annuler</button>
+      <button class="modal-btn save" onclick="saveItem()">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+const SK = 'neuautostock-v1';
+let items = [];
+let curCat = '';
+let editId = null;
+let qsCollapsed = false;
+
+const CATS = [
+  { key: '', label: 'Tout', icon: '' },
+  { key: 'lame', label: 'Lames', icon: '🔑' },
+  { key: 'telecommande', label: 'Télécom.', icon: '📡' },
+  { key: 'transpondeur', label: 'Transp.', icon: '📟' },
+  { key: 'lishi', label: 'Lishi', icon: '🔧' },
+  { key: 'pile', label: 'Piles', icon: '🔋' },
+  { key: 'alerte', label: 'Alertes', icon: '⚠️' }
+];
+
+const CAT_LBL = { lame:'Lame', telecommande:'Télécom.', transpondeur:'Transp.', lishi:'Lishi', pile:'Pile' };
+
+const DEFAULTS = [
+  {id:1,ref:'HU66',nom:'Lame HU66',cat:'lame',compat:'VW Golf IV-VII, Polo, Passat, Audi A3/A4, Seat, Skoda',qte:0,seuil:3},
+  {id:2,ref:'HU100',nom:'Lame HU100',cat:'lame',compat:'VW Touareg, Porsche Cayenne, Phaeton',qte:0,seuil:2},
+  {id:3,ref:'HU162T',nom:'Lame HU162T (laser)',cat:'lame',compat:'Audi A3/A4/Q7 (2016+), VW Golf VII/VIII',qte:0,seuil:2},
+  {id:4,ref:'VA6',nom:'Lame VA6',cat:'lame',compat:'Renault Clio III, Mégane II, Kangoo, Laguna',qte:0,seuil:3},
+  {id:5,ref:'VA2',nom:'Lame VA2 fraisée',cat:'lame',compat:'Renault Laguna II/III, Espace IV, Mégane II',qte:0,seuil:2},
+  {id:6,ref:'NE73',nom:'Lame NE73',cat:'lame',compat:'Renault Trafic II, Kangoo I, Master',qte:0,seuil:2},
+  {id:7,ref:'SX9',nom:'Lame SX9',cat:'lame',compat:'Peugeot 206/207/307/308, Citroën C3/C4, Berlingo',qte:0,seuil:3},
+  {id:8,ref:'NE78',nom:'Lame NE78',cat:'lame',compat:'Peugeot 106/206 (avant 2002), Citroën Saxo, Berlingo ancien',qte:0,seuil:2},
+  {id:9,ref:'HCA',nom:'Lame HCA / SIP22',cat:'lame',compat:'Peugeot 3008/5008/508, Citroën C5/C6, DS',qte:0,seuil:2},
+  {id:10,ref:'MIT11',nom:'Lame MIT11',cat:'lame',compat:'Citroën C1/C2/C3, Peugeot 107/207 (2005-2012)',qte:0,seuil:2},
+  {id:11,ref:'FO21',nom:'Lame FO21',cat:'lame',compat:'Ford Fiesta, Focus, C-Max, Fusion (2001-2012)',qte:0,seuil:2},
+  {id:12,ref:'FO38',nom:'Lame FO38',cat:'lame',compat:'Ford Mondeo IV, S-Max, Galaxy (2007+)',qte:0,seuil:2},
+  {id:13,ref:'YM28',nom:'Lame YM28',cat:'lame',compat:'Opel Astra, Corsa, Insignia, Zafira',qte:0,seuil:2},
+  {id:14,ref:'TOY43',nom:'Lame TOY43',cat:'lame',compat:'Toyota Yaris, Corolla, Auris, Avensis',qte:0,seuil:2},
+  {id:15,ref:'HY15',nom:'Lame HY15',cat:'lame',compat:'Toyota Camry, Hilux, Land Cruiser',qte:0,seuil:2},
+  {id:16,ref:'MIT8',nom:'Lame MIT8',cat:'lame',compat:'Mitsubishi Colt, Outlander, Pajero, Galant',qte:0,seuil:2},
+  {id:17,ref:'NSN14',nom:'Lame NSN14',cat:'lame',compat:'Nissan Micra, Almera, Qashqai, Note',qte:0,seuil:2},
+  {id:18,ref:'HON66',nom:'Lame HON66',cat:'lame',compat:'Honda Civic, Jazz, CR-V, Accord (2002-2014)',qte:0,seuil:2},
+  {id:19,ref:'HU92',nom:'Lame HU92 / BWZ',cat:'lame',compat:'BMW Série 1/3/5/X3/X5 (E46, E90, E60)',qte:0,seuil:2},
+  {id:20,ref:'HU58',nom:'Lame HU58',cat:'lame',compat:'BMW Série 3/5/7 (E36, E46 avant 2000)',qte:0,seuil:2},
+  {id:21,ref:'HU64',nom:'Lame HU64',cat:'lame',compat:'BMW F-Series, Série 1/2/3/4/5 (2013+)',qte:0,seuil:2},
+  {id:22,ref:'HU100R',nom:'Lame HU100R (laser)',cat:'lame',compat:'BMW G-Series (2018+), Mini F-Series',qte:0,seuil:2},
+  {id:23,ref:'ME/HU64',nom:'Lame Mercedes',cat:'lame',compat:'Mercedes Classe A/B/C/E/S, Vito (2003-2015)',qte:0,seuil:2},
+  {id:24,ref:'KIA1/HY20',nom:'Lame Kia/Hyundai',cat:'lame',compat:'Kia Rio, Cee\'d, Sportage / Hyundai i20, i30, Tucson',qte:0,seuil:2},
+  {id:25,ref:'HU133R',nom:'Lame HU133R Suzuki',cat:'lame',compat:'Suzuki Swift, Vitara, Alto (2010+)',qte:0,seuil:2},
+  {id:26,ref:'MAZ24',nom:'Lame MAZ24',cat:'lame',compat:'Mazda 2/3/6, CX-5, MX-5',qte:0,seuil:2},
+  {id:27,ref:'VAC102',nom:'Lame VAC102 Dacia',cat:'lame',compat:'Dacia Logan, Sandero, Duster, Dokker',qte:0,seuil:2},
+  {id:28,ref:'GT15',nom:'Lame GT15',cat:'lame',compat:'Alfa Romeo 147/156/159, Fiat Stilo, Bravo',qte:0,seuil:2},
+  {id:29,ref:'SIP6',nom:'Lame SIP6',cat:'lame',compat:'Lancia Delta, Ypsilon, Fiat Punto (2002+)',qte:0,seuil:2},
+  {id:30,ref:'CR2',nom:'Lame CR2',cat:'lame',compat:'Chrysler, Dodge, Jeep (modèles EU)',qte:0,seuil:2},
+  {id:31,ref:'TRC-VAG-3B',nom:'Télécom. 3B VAG',cat:'telecommande',compat:'VW Golf IV/Polo/Bora — 433.92 MHz ASK — ID48',qte:0,seuil:2},
+  {id:32,ref:'TRC-VAG-FLIP',nom:'Télécom. flip VAG HU66',cat:'telecommande',compat:'VW Golf V-VII, Passat, Touran — lame HU66',qte:0,seuil:2},
+  {id:33,ref:'TRC-REN-CARTE',nom:'Télécom. carte Renault',cat:'telecommande',compat:'Laguna II/III, Espace IV, Vel Satis — 433 MHz',qte:0,seuil:2},
+  {id:34,ref:'TRC-REN-VA6',nom:'Télécom. 2B Renault VA6',cat:'telecommande',compat:'Clio III, Kangoo II, Modus — 433 MHz FSK',qte:0,seuil:2},
+  {id:35,ref:'TRC-PSA-2B',nom:'Télécom. 2B PSA',cat:'telecommande',compat:'Peugeot 207/307/308, Citroën C3/C4 — 433 MHz',qte:0,seuil:2},
+  {id:36,ref:'TRC-PSA-3B',nom:'Télécom. 3B PSA',cat:'telecommande',compat:'Peugeot 3008/5008, Citroën C5 — 433 MHz',qte:0,seuil:2},
+  {id:37,ref:'TRC-FORD-3B',nom:'Télécom. 3B Ford',cat:'telecommande',compat:'Fiesta, Focus, C-Max (2007+) — 433 MHz FSK',qte:0,seuil:2},
+  {id:38,ref:'TRC-OPEL-2B',nom:'Télécom. 2B Opel',cat:'telecommande',compat:'Astra H, Corsa D, Zafira B — 433 MHz',qte:0,seuil:2},
+  {id:39,ref:'TRC-TOY-2B',nom:'Télécom. 2B Toyota',cat:'telecommande',compat:'Yaris/Corolla (2006-2014) — 433 MHz — ID67',qte:0,seuil:2},
+  {id:40,ref:'TRC-BMW-CAS',nom:'Télécom. BMW CAS2/CAS3',cat:'telecommande',compat:'BMW Série 1/3/5/X5 (E-series 2004-2013)',qte:0,seuil:2},
+  {id:41,ref:'TRC-MERC-3B',nom:'Télécom. Mercedes 3B',cat:'telecommande',compat:'Classe A/B/C/E (W203/W211) — 433 MHz',qte:0,seuil:2},
+  {id:42,ref:'TRC-NIS-2B',nom:'Télécom. 2B Nissan',cat:'telecommande',compat:'Micra K12, Note, Almera — 433 MHz — ID46',qte:0,seuil:2},
+  {id:43,ref:'TRC-KIA-3B',nom:'Télécom. 3B Kia/Hyundai',cat:'telecommande',compat:'Rio, Cee\'d, i30, Tucson — 433 MHz — ID46',qte:0,seuil:2},
+  {id:44,ref:'ID11',nom:'Transp. ID11',cat:'transpondeur',compat:'Renault (1992-1998), Citroën, Peugeot ancien',qte:0,seuil:3},
+  {id:45,ref:'ID13',nom:'Transp. ID13',cat:'transpondeur',compat:'Peugeot 206 (1998-2002), Citroën Saxo',qte:0,seuil:3},
+  {id:46,ref:'ID33',nom:'Transp. ID33 crypto',cat:'transpondeur',compat:'Renault Clio II, Kangoo, Mégane I',qte:0,seuil:3},
+  {id:47,ref:'ID46/PCF7936',nom:'Transp. ID46',cat:'transpondeur',compat:'Citroën, Peugeot, Renault, Nissan, VW (2000-2010)',qte:0,seuil:3},
+  {id:48,ref:'ID48/PCF7939',nom:'Transp. ID48 crypto',cat:'transpondeur',compat:'VW, Audi, Seat, Skoda (2001-2018)',qte:0,seuil:3},
+  {id:49,ref:'ID4D60',nom:'Transp. ID4D60 TT',cat:'transpondeur',compat:'Toyota Yaris/Corolla/Avensis/RAV4 (2005-2014)',qte:0,seuil:3},
+  {id:50,ref:'ID4D63',nom:'Transp. ID4D63 80bit',cat:'transpondeur',compat:'Mazda, Subaru, Mitsubishi (2009+)',qte:0,seuil:2},
+  {id:51,ref:'ID4C',nom:'Transp. ID4C',cat:'transpondeur',compat:'Toyota / Lexus (1999-2005)',qte:0,seuil:2},
+  {id:52,ref:'ID6E',nom:'Transp. ID6E Honda',cat:'transpondeur',compat:'Honda Civic, Jazz, CR-V (2011+)',qte:0,seuil:2},
+  {id:53,ref:'ID70',nom:'Transp. ID70 Ford',cat:'transpondeur',compat:'Ford Focus/Fiesta/Mondeo (2012+)',qte:0,seuil:2},
+  {id:54,ref:'ID8E/AES',nom:'Transp. ID8E Audi',cat:'transpondeur',compat:'Audi A4/A5/A6/Q5/Q7 (2013+)',qte:0,seuil:2},
+  {id:55,ref:'Megamos88',nom:'Transp. Megamos Crypto 88',cat:'transpondeur',compat:'VW Golf VII, Polo, Tiguan (2013+)',qte:0,seuil:2},
+  {id:56,ref:'VVDI-SB',nom:'Super chip VVDI universel',cat:'transpondeur',compat:'Clonage universel (ID46/48/4D/8E) via VVDI',qte:0,seuil:2},
+  {id:57,ref:'Lishi HU66',nom:'Lishi 2en1 HU66',cat:'lishi',compat:'VW Golf IV-VII, Audi A3/A4, Seat, Skoda',qte:0,seuil:1},
+  {id:58,ref:'Lishi HU100',nom:'Lishi 2en1 HU100',cat:'lishi',compat:'VW Touareg, Porsche Cayenne',qte:0,seuil:1},
+  {id:59,ref:'Lishi HU162T',nom:'Lishi 2en1 HU162T',cat:'lishi',compat:'Audi A3/A4/Q7 (2016+), VW Golf VII/VIII',qte:0,seuil:1},
+  {id:60,ref:'Lishi VA6',nom:'Lishi 2en1 VA6',cat:'lishi',compat:'Renault Clio III, Mégane II, Kangoo, Laguna',qte:0,seuil:1},
+  {id:61,ref:'Lishi VA2',nom:'Lishi 2en1 VA2',cat:'lishi',compat:'Renault Laguna II/III, Espace IV',qte:0,seuil:1},
+  {id:62,ref:'Lishi SX9',nom:'Lishi 2en1 SX9',cat:'lishi',compat:'Peugeot 206/207/307/308, Citroën C3/C4',qte:0,seuil:1},
+  {id:63,ref:'Lishi HCA',nom:'Lishi 2en1 HCA',cat:'lishi',compat:'Peugeot 3008/5008/508, Citroën C5/C6, DS',qte:0,seuil:1},
+  {id:64,ref:'Lishi FO21',nom:'Lishi 2en1 FO21',cat:'lishi',compat:'Ford Fiesta, Focus, C-Max, Fusion',qte:0,seuil:1},
+  {id:65,ref:'Lishi FO38',nom:'Lishi 2en1 FO38',cat:'lishi',compat:'Ford Mondeo IV, S-Max, Galaxy (2007+)',qte:0,seuil:1},
+  {id:66,ref:'Lishi YM28',nom:'Lishi 2en1 YM28',cat:'lishi',compat:'Opel Astra H/J, Corsa D, Insignia, Zafira',qte:0,seuil:1},
+  {id:67,ref:'Lishi TOY43',nom:'Lishi 2en1 TOY43',cat:'lishi',compat:'Toyota Yaris, Corolla, Auris, Avensis',qte:0,seuil:1},
+  {id:68,ref:'Lishi NSN14',nom:'Lishi 2en1 NSN14',cat:'lishi',compat:'Nissan Micra K12, Almera, Qashqai, Note',qte:0,seuil:1},
+  {id:69,ref:'Lishi HON66',nom:'Lishi 2en1 HON66',cat:'lishi',compat:'Honda Civic, Jazz, CR-V, Accord',qte:0,seuil:1},
+  {id:70,ref:'Lishi HU92',nom:'Lishi 2en1 HU92',cat:'lishi',compat:'BMW Série 1/3/5/X3/X5 (E-series)',qte:0,seuil:1},
+  {id:71,ref:'Lishi HU64',nom:'Lishi 2en1 HU64',cat:'lishi',compat:'BMW F-Series, Série 1/2/3/4/5 (2013+)',qte:0,seuil:1},
+  {id:72,ref:'Lishi HU100R',nom:'Lishi 2en1 HU100R',cat:'lishi',compat:'BMW G-Series (2018+), Mini F-Series',qte:0,seuil:1},
+  {id:73,ref:'Lishi KIA1',nom:'Lishi 2en1 KIA1',cat:'lishi',compat:'Kia Rio, Cee\'d, Sportage / Hyundai i20, i30',qte:0,seuil:1},
+  {id:74,ref:'Lishi MIT11',nom:'Lishi 2en1 MIT11',cat:'lishi',compat:'Citroën C1/C2/C3, Peugeot 107/207',qte:0,seuil:1},
+  {id:75,ref:'Lishi MAZ24',nom:'Lishi 2en1 MAZ24',cat:'lishi',compat:'Mazda 2/3/6, CX-5, MX-5',qte:0,seuil:1},
+  {id:76,ref:'Lishi GT15',nom:'Lishi 2en1 GT15',cat:'lishi',compat:'Alfa Romeo 147/156/159, Fiat Stilo, Bravo',qte:0,seuil:1},
+  {id:77,ref:'CR2032',nom:'Pile CR2032',cat:'pile',compat:'VW Golf IV/V/VI, Audi A3/A4, Seat, Skoda, Opel, Renault',qte:0,seuil:5},
+  {id:78,ref:'CR2025',nom:'Pile CR2025',cat:'pile',compat:'Toyota Yaris/Corolla/Auris, Honda Civic/Jazz, Mazda',qte:0,seuil:5},
+  {id:79,ref:'CR2016',nom:'Pile CR2016',cat:'pile',compat:'BMW E-series, Mini, Porsche Cayenne (anciens)',qte:0,seuil:5},
+  {id:80,ref:'CR1620',nom:'Pile CR1620',cat:'pile',compat:'Peugeot 206/207/307, Citroën C3/C4, Renault Clio III',qte:0,seuil:5},
+  {id:81,ref:'CR1616',nom:'Pile CR1616',cat:'pile',compat:'Nissan Micra K12, Note, Almera',qte:0,seuil:4},
+  {id:82,ref:'CR1632',nom:'Pile CR1632',cat:'pile',compat:'Ford Focus/Fiesta/Mondeo (2007+), C-Max, S-Max',qte:0,seuil:4},
+  {id:83,ref:'CR1225',nom:'Pile CR1225',cat:'pile',compat:'Renault Trafic II, Kangoo I, Master',qte:0,seuil:3},
+  {id:84,ref:'CR2354',nom:'Pile CR2354',cat:'pile',compat:'Mercedes Classe A/B/C/E (W203/W211), Vito',qte:0,seuil:3},
+  {id:85,ref:'CR2450',nom:'Pile CR2450',cat:'pile',compat:'BMW F-Series (2013+), Mini F-Series — Smart key',qte:0,seuil:3},
+  {id:86,ref:'CR2430',nom:'Pile CR2430',cat:'pile',compat:'Kia, Hyundai — télécommandes 3 boutons récentes',qte:0,seuil:3},
+  {id:87,ref:'CR2412',nom:'Pile CR2412',cat:'pile',compat:'Volkswagen Golf VII/VIII, Polo (2017+), Passat B8',qte:0,seuil:3},
+];
+
+// Init
+function init() {
+  load();
+  renderCats();
+  render();
+  
+  document.getElementById('searchInput').addEventListener('input', function() {
+    document.getElementById('searchWrap').classList.toggle('has-value', this.value.length > 0);
+    render();
+  });
+  
+  qsCollapsed = localStorage.getItem('qs-collapsed') === '1';
+  if (qsCollapsed) document.getElementById('quickStock').classList.add('collapsed');
+}
+
+function load() {
+  try {
+    const s = localStorage.getItem(SK);
+    items = s ? JSON.parse(s) : [...DEFAULTS];
+    if (!s) save();
+  } catch(e) { items = [...DEFAULTS]; }
+}
+
+function save() {
+  try { localStorage.setItem(SK, JSON.stringify(items)); } catch(e) {}
+}
+
+// Render
+function renderCats() {
+  const el = document.getElementById('cats');
+  el.innerHTML = CATS.map(c => {
+    const cnt = c.key === 'alerte' 
+      ? items.filter(i => i.qte > 0 && i.qte <= i.seuil).length
+      : c.key ? items.filter(i => i.cat === c.key).length : items.length;
+    const act = curCat === c.key ? 'active' : '';
+    const alert = c.key === 'alerte' ? 'alert-cat' : '';
+    return `<button class="cat-pill ${act} ${alert}" onclick="setCat('${c.key}')">${c.icon ? c.icon + ' ' : ''}${c.label}<span class="cnt">${cnt}</span></button>`;
+  }).join('');
+}
+
+function render() {
+  const q = document.getElementById('searchInput').value.toLowerCase().trim();
+  let f = items.filter(i => {
+    if (curCat === 'alerte') return i.qte > 0 && i.qte <= i.seuil;
+    if (curCat && i.cat !== curCat) return false;
+    if (!q) return true;
+    return (i.ref + ' ' + i.nom + ' ' + i.compat).toLowerCase().includes(q);
+  });
+  
+  renderQuickStock();
+  renderStats();
+  renderGrid(f);
+  renderCats();
+}
+
+function renderQuickStock() {
+  const g = document.getElementById('quickStockGrid');
+  const sorted = [...items].sort((a, b) => {
+    const aL = a.qte > 0 && a.qte <= a.seuil;
+    const bL = b.qte > 0 && b.qte <= b.seuil;
+    if (aL && !bL) return -1;
+    if (!aL && bL) return 1;
+    if (a.qte === 0 && b.qte > 0) return 1;
+    if (b.qte === 0 && a.qte > 0) return -1;
+    return a.ref.localeCompare(b.ref);
+  });
+  
+  g.innerHTML = sorted.map(i => {
+    const low = i.qte > 0 && i.qte <= i.seuil;
+    const zero = i.qte === 0;
+    const cls = zero ? 'zero-stock' : low ? 'low-stock' : i.qte > 0 ? 'in-stock' : '';
+    return `<div class="quick-ref ${cls}" onclick="scrollTo(${i.id})" title="${i.nom}">${low ? '<div class="quick-ref-dot"></div>' : ''}<div class="quick-ref-code">${i.ref}</div><div class="quick-ref-qty">${i.qte}</div></div>`;
+  }).join('');
+}
+
+function renderStats() {
+  const al = items.filter(i => i.qte > 0 && i.qte <= i.seuil).length;
+  const tot = items.reduce((s, i) => s + i.qte, 0);
+  const stats = [
+    { v: items.length, l: 'Réfs', w: false },
+    { v: tot, l: 'Stock', w: false },
+    { v: items.filter(i => i.cat === 'lame').length, l: 'Lames', w: false },
+    { v: items.filter(i => i.cat === 'telecommande').length, l: 'Télécom.', w: false },
+    { v: items.filter(i => i.cat === 'transpondeur').length, l: 'Transp.', w: false },
+    { v: items.filter(i => i.cat === 'lishi').length, l: 'Lishi', w: false },
+    { v: items.filter(i => i.cat === 'pile').length, l: 'Piles', w: false },
+    { v: al, l: 'Alertes', w: al > 0 },
+  ];
+  document.getElementById('statsBar').innerHTML = stats.map(s => `<div class="stat-chip"><div class="stat-value ${s.w ? 'warn' : ''}">${s.v}</div><div class="stat-label">${s.l}</div></div>`).join('');
+}
+
+function renderGrid(f) {
+  const c = document.getElementById('mainContent');
+  if (!f.length) {
+    c.innerHTML = `<div class="empty-state"><div class="empty-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div><div class="empty-title">Aucun article trouvé</div><div class="empty-text">Essayez une autre recherche</div></div>`;
+    return;
+  }
+  
+  const groups = [
+    { k: 'lame', l: 'Lames' },
+    { k: 'telecommande', l: 'Télécommandes' },
+    { k: 'transpondeur', l: 'Transpondeurs' },
+    { k: 'lishi', l: 'Lishi' },
+    { k: 'pile', l: 'Piles' }
+  ];
+  
+  let h = '';
+  if (!curCat || curCat === 'alerte') {
+    for (const g of groups) {
+      const sub = f.filter(i => i.cat === g.k);
+      if (!sub.length) continue;
+      h += `<div class="section-header"><span class="section-title">${g.l}</span><span class="section-badge">${sub.length}</span><div class="section-line"></div></div><div class="grid">${sub.map(card).join('')}</div>`;
+    }
+  } else {
+    h = `<div class="grid">${f.map(card).join('')}</div>`;
+  }
+  c.innerHTML = h;
+}
+
+function card(i) {
+  const low = i.qte > 0 && i.qte <= i.seuil;
+  const zero = i.qte === 0;
+  const cls = zero ? 'zero-stock' : low ? 'low-stock' : '';
+  const qc = zero ? 'zero' : low ? 'low' : 'ok';
+  return `<div class="card ${cls}" id="item-${i.id}">${low ? '<div class="card-alert"></div>' : ''}<div class="card-ref">${i.ref}</div><div class="card-name">${i.nom}</div><div class="card-compat">${i.compat}</div><div class="card-badge badge-${i.cat}">${CAT_LBL[i.cat] || i.cat}</div><div class="qty-row"><div class="qty-controls"><button class="qty-btn" onclick="adj(${i.id},-1)">−</button><span class="qty-value ${qc}">${i.qte}</span><button class="qty-btn" onclick="adj(${i.id},+1)">+</button></div></div><div class="card-actions"><button class="action-btn" onclick="edit(${i.id})">Modifier</button><button class="action-btn danger" onclick="del(${i.id})">Suppr.</button></div></div>`;
+}
+
+// Actions
+function setCat(k) { curCat = k; render(); }
+function clearSearch() { const e = document.getElementById('searchInput'); e.value = ''; document.getElementById('searchWrap').classList.remove('has-value'); render(); e.focus(); }
+function toggleQuickStock() { qsCollapsed = !qsCollapsed; document.getElementById('quickStock').classList.toggle('collapsed', qsCollapsed); localStorage.setItem('qs-collapsed', qsCollapsed ? '1' : '0'); }
+
+function scrollTo(id) {
+  curCat = '';
+  render();
+  setTimeout(() => {
+    const el = document.getElementById(`item-${id}`);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      el.style.boxShadow = '0 0 0 2px var(--gold)';
+      setTimeout(() => el.style.boxShadow = '', 1500);
+    }
+  }, 50);
+}
+
+function adj(id, d) {
+  const i = items.find(x => x.id === id);
+  if (!i) return;
+  i.qte = Math.max(0, i.qte + d);
+  save(); render();
+  toast(d > 0 ? `+1 · ${i.ref}` : `−1 · ${i.ref}`, 'success');
+}
+
+function del(id) {
+  const i = items.find(x => x.id === id);
+  if (!i || !confirm(`Supprimer "${i.ref}" ?`)) return;
+  items = items.filter(x => x.id !== id);
+  save(); render();
+  toast('Supprimé', 'error');
+}
+
+// Modal
+function openModal(id = null) {
+  editId = id;
+  const m = document.getElementById('modalOverlay');
+  const t = document.getElementById('modalTitle');
+  
+  if (id) {
+    const i = items.find(x => x.id === id);
+    if (!i) return;
+    t.textContent = 'Modifier';
+    document.getElementById('formRef').value = i.ref;
+    document.getElementById('formName').value = i.nom;
+    document.getElementById('formCat').value = i.cat;
+    document.getElementById('formCompat').value = i.compat;
+    document.getElementById('formQty').value = i.qte;
+    document.getElementById('formThreshold').value = i.seuil;
+  } else {
+    t.textContent = 'Ajouter un article';
+    document.getElementById('formRef').value = '';
+    document.getElementById('formName').value = '';
+    document.getElementById('formCat').value = 'lame';
+    document.getElementById('formCompat').value = '';
+    document.getElementById('formQty').value = 1;
+    document.getElementById('formThreshold').value = 2;
+  }
+  m.classList.remove('hidden');
+}
+
+function closeModal(e) {
+  if (e && e.target !== e.currentTarget) return;
+  document.getElementById('modalOverlay').classList.add('hidden');
+}
+
+function saveItem() {
+  const ref = document.getElementById('formRef').value.trim();
+  if (!ref) { toast('Référence obligatoire', 'error'); return; }
+  
+  const obj = {
+    id: editId || Date.now(),
+    ref,
+    nom: document.getElementById('formName').value.trim() || ref,
+    cat: document.getElementById('formCat').value,
+    compat: document.getElementById('formCompat').value.trim(),
+    qte: parseInt(document.getElementById('formQty').value) || 0,
+    seuil: parseInt(document.getElementById('formThreshold').value) || 0
+  };
+  
+  if (editId) {
+    const idx = items.findIndex(x => x.id === editId);
+    if (idx !== -1) items[idx] = obj;
+  } else {
+    items.push(obj);
+  }
+  
+  save(); render(); closeModal();
+  toast(editId ? 'Mis à jour' : 'Ajouté', 'success');
+}
+
+function edit(id) { openModal(id); }
+
+// Toast
+let tt;
+function toast(msg, type = 'success') {
+  const e = document.getElementById('toast');
+  e.textContent = msg;
+  e.className = `toast show ${type}`;
+  clearTimeout(tt);
+  tt = setTimeout(() => e.classList.remove('show'), 2000);
+}
+
+init();
+</script>
+</body>
+</html>
